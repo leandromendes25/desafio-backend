@@ -26,9 +26,9 @@ public class Endereco {
     @JoinColumn(name = "estabelecimento_id")
     private Estabelecimento estabelecimento;
 
-//    public Endereco() {
-//
-//    }
+    public Endereco() {
+
+    }
 
     public Endereco(String estado, String cidade, String bairro, String cep, String rua, Integer numero) {
         this.estado = estado;
