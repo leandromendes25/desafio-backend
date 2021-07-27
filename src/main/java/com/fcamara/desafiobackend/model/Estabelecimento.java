@@ -1,7 +1,8 @@
 package com.fcamara.desafiobackend.model;
 
 import lombok.Getter;
-import org.hibernate.annotations.Cascade;
+import lombok.Setter;
+
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,18 +10,40 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 public class Estabelecimento {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     private String cnpj;
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @OneToMany
-    private List<Endereco> endereco = new ArrayList<>();
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @OneToMany
+    @OneToMany(mappedBy = "estabelecimento", cascade = CascadeType.ALL)
+    private List<Endereco> enderecos = new ArrayList<>();
+    @OneToMany(mappedBy = "estabelecimento", cascade = CascadeType.ALL)
     private List<Telefone> telefones = new ArrayList<>();
-    private String vagasMotos;
-    private String vagasCarros;
+    private Integer vagasMotos;
+    private Integer vagasCarros;
+
+    public Estabelecimento() {
+
+    }
+
+    public Estabelecimento(String nome, String cnpj, Integer vagasMotos, Integer vagasCarros) {
+        this.nome = nome;
+        this.cnpj = cnpj;
+        this.vagasMotos = vagasMotos;
+        this.vagasCarros = vagasCarros;
+    }
+
+    public void adicionarEndereco(Endereco endereco) {
+      endereco.setEstabelecimento(this);
+      this.enderecos.add(endereco);
+    }
+
+    public void adicionarTelefone(Telefone telefone) {
+      telefone.setEstabelecimento(this);
+      this.telefones.add(telefone);
+    }
 }

@@ -1,40 +1,40 @@
 package com.fcamara.desafiobackend.controller.dto;
 
 import com.fcamara.desafiobackend.model.Estabelecimento;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+@Getter
 public class EstabelecimentoDto {
 
-    private String cnpj;
+    private Long id;
     private String nome;
-    private String qtdVagasCarros;
-    private String qtdVagasMotos;
+    private String cnpj;
+    private List<EnderecoDto> enderecos;
+    private List<TelefoneDto> telefones;
+    private Integer quantidadeVagasMotos;
+    private Integer quantidadeVagasCarros;
 
-    public EstabelecimentoDto(Estabelecimento estabelecimento){
+    public EstabelecimentoDto(Estabelecimento estabelecimento, List<EnderecoDto> enderecos, List<TelefoneDto> telefones) {
+        this.id = estabelecimento.getId();
         this.cnpj = estabelecimento.getCnpj();
         this.nome = estabelecimento.getNome();
-        this.qtdVagasCarros = estabelecimento.getVagasCarros();
-        this.qtdVagasMotos = estabelecimento.getVagasMotos();
+        this.enderecos = enderecos;
+        this.telefones = telefones;
+        this.quantidadeVagasMotos = estabelecimento.getVagasMotos();
+        this.quantidadeVagasCarros = estabelecimento.getVagasCarros();
     }
 
-    public String getCnpj() {
-        return cnpj;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public String getQtdVagasCarros() {
-        return qtdVagasCarros;
-    }
-
-    public String getQtdVagasMotos() {
-        return qtdVagasMotos;
-    }
     public static List<EstabelecimentoDto> converter(List<Estabelecimento> estabelecimentos){
-        return estabelecimentos.stream().map(EstabelecimentoDto::new).collect(Collectors.toList());
+        return estabelecimentos.stream().map(
+                estabelecimento -> new EstabelecimentoDto(estabelecimento, EnderecoDto.converter(estabelecimento.getEnderecos()), TelefoneDto.converter(estabelecimento.getTelefones()))
+        ).collect(Collectors.toList());
+    }
+
+    public static EstabelecimentoDto converter(Estabelecimento estabelecimento) {
+        return new EstabelecimentoDto(estabelecimento, EnderecoDto.converter(estabelecimento.getEnderecos()), TelefoneDto.converter(estabelecimento.getTelefones()));
     }
 }
