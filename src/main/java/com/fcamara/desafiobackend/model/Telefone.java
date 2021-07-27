@@ -1,17 +1,36 @@
 package com.fcamara.desafiobackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.ManyToOne;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Setter
+@ToString
 public class Telefone {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String numero;
-    @ManyToOne
-    @JoinColumn(name = "estacionamento_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "estabelecimento_id")
     private Estabelecimento estabelecimento;
+
+    public Telefone() {
+
+    }
+
+    public Telefone(String numero) {
+        this.numero = numero;
+    }
+
 }
