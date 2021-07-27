@@ -1,10 +1,17 @@
 package com.fcamara.desafiobackend.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
+
 @Entity
+@Getter
+@Setter
 public class Veiculo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +21,8 @@ public class Veiculo {
     private String cor;
     private String placa;
     private TipoVeiculo tipo;
+    private boolean estacionado = false;
+    private LocalDateTime entrada;
 
     public Veiculo() {
 
@@ -27,23 +36,4 @@ public class Veiculo {
         this.tipo = tipo;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public String getModelo() {
-        return modelo;
-    }
-
-    public String getPlaca() {
-        return placa;
-    }
-
-    public TipoVeiculo getTipo() {
-        return tipo;
-    }
 }
