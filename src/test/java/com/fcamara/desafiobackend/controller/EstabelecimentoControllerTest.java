@@ -24,7 +24,16 @@ public class EstabelecimentoControllerTest {
 
     Telefone telefone = new Telefone("11989345678");
 
-    Endereco endereco = new Endereco("SP", "Sao Paulo", "Sapopemba", "03928130", "Rua Tal", 9);
+//    Endereco endereco = new Endereco("SP", "Sao Paulo", "Sapopemba", "03928130", "Rua Tal", 9);
+
+    String endereco = new JSONObject()
+            .put("estado", "SP")
+            .put("cidade", "São Paulo")
+            .put("bairro", "Sapopemba")
+            .put("cep", "03928130")
+            .put("rua", "Rua Tal")
+            .put("numero", 20)
+            .toString();
 
     String form = new JSONObject()
             .put("nome", "Estacionamento TakamassaNoMuro")
