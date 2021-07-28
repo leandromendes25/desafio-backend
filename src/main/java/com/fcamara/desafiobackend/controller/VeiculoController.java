@@ -24,10 +24,9 @@ public class VeiculoController {
     }
 
     @PostMapping
-    public ResponseEntity<VeiculoDto> insert(VeiculoForm form, UriComponentsBuilder uriBuilder){//form pega e converte
+    public ResponseEntity<VeiculoDto> insert(@RequestBody VeiculoForm form){//form pega e converte
        Veiculo veiculo = repository.save(form.converter());
-       URI uri = uriBuilder.path("/veiculos/{id}").buildAndExpand(veiculo.getId()).toUri();
-       return ResponseEntity.created(uri).body(new VeiculoDto(veiculo));
+       return ResponseEntity.status(201).body(VeiculoDto.converter(veiculo));
     }
 
 }

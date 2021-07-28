@@ -1,10 +1,14 @@
 package com.fcamara.desafiobackend.model;
 
+import lombok.Getter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 @Entity
+@Getter
 public class Veiculo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,23 +31,4 @@ public class Veiculo {
         this.tipo = tipo;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public String getModelo() {
-        return modelo;
-    }
-
-    public String getPlaca() {
-        return placa;
-    }
-
-    public TipoVeiculo getTipo() {
-        return tipo;
-    }
 }

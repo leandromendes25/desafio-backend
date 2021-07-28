@@ -34,4 +34,21 @@ public class EstabelecimentoController {
     }
     return ResponseEntity.status(201).body(EstabelecimentoDto.converter(repository.save(form.converter())));
   }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<?> update(@RequestBody @Valid EstabelecimentoForm form, @PathVariable Long id) {
+    Optional<Estabelecimento> estabelecimentoDb = repository.findById(id);
+    if(!estabelecimentoDb.isPresent()) return ResponseEntity.badRequest().body(JsonResponse.message("Estabelecimento nao encontrado"));
+    Estabelecimento estabelecimento = form.converter();
+    estabelecimento.setId(id);
+    return ResponseEntity.ok(EstabelecimentoDto.converter(repository.save(estabelecimento)));
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<String> destroy(@PathVariable Long id) {
+    Optional<Estabelecimento> estabelecimento = repository.findById(id);
+    if (!estabelecimento.isPresent()) return ResponseEntity.badRequest().body(JsonResponse.message("Estabelecimento nao encontrado"));
+    repository.delete(estabelecimento.get());
+    return ResponseEntity.ok(JsonResponse.message("Estacionamento excluido com sucesso"));
+  }
 }
