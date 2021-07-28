@@ -23,6 +23,9 @@ public class Estabelecimento {
     private List<Telefone> telefones = new ArrayList<>();
     private Integer vagasMotos;
     private Integer vagasCarros;
+    private Integer vagasOcupadasMotos;
+    private Integer vagasOcupadasCarros;
+    private double valorHora;
 
     public Estabelecimento() {
 
