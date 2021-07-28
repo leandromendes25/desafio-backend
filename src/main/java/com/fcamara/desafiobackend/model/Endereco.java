@@ -5,12 +5,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Getter
 @Setter
 @ToString
-public class Endereco {
+public class Endereco{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +31,7 @@ public class Endereco {
 
     }
 
-    public Endereco(String estado, String cidade, String bairro, String cep, String rua, Integer numero) {
+    public Endereco(String estado, String cidade, String bairro, String cep, String rua, int numero) {
         this.estado = estado;
         this.cidade = cidade;
         this.bairro = bairro;

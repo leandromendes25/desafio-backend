@@ -31,11 +31,12 @@ public class Estabelecimento {
 
     }
 
-    public Estabelecimento(String nome, String cnpj, Integer vagasMotos, Integer vagasCarros) {
+    public Estabelecimento(String nome, String cnpj, Integer vagasMotos, Integer vagasCarros, double valorHora) {
         this.nome = nome;
         this.cnpj = cnpj;
         this.vagasMotos = vagasMotos;
         this.vagasCarros = vagasCarros;
+        this.valorHora = valorHora;
     }
 
     public void adicionarEndereco(Endereco endereco) {

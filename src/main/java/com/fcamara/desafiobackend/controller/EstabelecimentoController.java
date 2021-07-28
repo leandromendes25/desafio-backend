@@ -2,7 +2,6 @@ package com.fcamara.desafiobackend.controller;
 
 import com.fcamara.desafiobackend.controller.dto.EstabelecimentoDto;
 import com.fcamara.desafiobackend.controller.form.EstabelecimentoForm;
-import com.fcamara.desafiobackend.model.Endereco;
 import com.fcamara.desafiobackend.model.Estabelecimento;
 import com.fcamara.desafiobackend.repository.EstabelecimentoRepository;
 import com.fcamara.desafiobackend.util.JsonResponse;
@@ -39,8 +38,7 @@ public class EstabelecimentoController {
   public ResponseEntity<?> update(@RequestBody @Valid EstabelecimentoForm form, @PathVariable Long id) {
     Optional<Estabelecimento> estabelecimentoDb = repository.findById(id);
     if(!estabelecimentoDb.isPresent()) return ResponseEntity.badRequest().body(JsonResponse.message("Estabelecimento nao encontrado"));
-    Estabelecimento estabelecimento = form.converter();
-    estabelecimento.setId(id);
+    Estabelecimento estabelecimento = form.converter(estabelecimentoDb.get());
     return ResponseEntity.ok(EstabelecimentoDto.converter(repository.save(estabelecimento)));
   }
 
@@ -49,6 +47,6 @@ public class EstabelecimentoController {
     Optional<Estabelecimento> estabelecimento = repository.findById(id);
     if (!estabelecimento.isPresent()) return ResponseEntity.badRequest().body(JsonResponse.message("Estabelecimento nao encontrado"));
     repository.delete(estabelecimento.get());
-    return ResponseEntity.ok(JsonResponse.message("Estacionamento excluido com sucesso"));
+    return ResponseEntity.ok(JsonResponse.message("Estabelecimento excluido com sucesso"));
   }
 }
