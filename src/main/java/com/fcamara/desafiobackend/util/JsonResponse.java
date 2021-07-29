@@ -21,4 +21,11 @@ public class JsonResponse {
             .put("valor", valor)
             .toString();
   }
+
+  public static String loginMessage(String token, String tipo) {
+    return new JSONObject()
+            .put("token", token)
+            .put("tipo", tipo)
+            .toString();
+  }
 }

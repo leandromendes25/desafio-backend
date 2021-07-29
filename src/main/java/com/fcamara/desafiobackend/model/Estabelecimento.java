@@ -26,6 +26,8 @@ public class Estabelecimento {
     private Integer vagasOcupadasMotos;
     private Integer vagasOcupadasCarros;
     private double valorHora;
+    @OneToMany
+    private List<Usuario> usuarios = new ArrayList<>();
 
     public Estabelecimento() {
 
@@ -46,5 +48,10 @@ public class Estabelecimento {
     public void adicionarTelefone(Telefone telefone) {
       telefone.setEstabelecimento(this);
       this.telefones.add(telefone);
+    }
+
+    public void adicionarUsuario(Usuario usuario) {
+        usuario.setEstabelecimento(this);
+        this.usuarios.add(usuario);
     }
 }
