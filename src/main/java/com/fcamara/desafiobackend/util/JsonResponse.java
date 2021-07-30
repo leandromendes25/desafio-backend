@@ -10,9 +10,18 @@ public class JsonResponse {
 
   public static String message(String message) {
     return new JSONObject()
-            .put("message", message)
+            .put("mensagem", message)
             .toString();
   }
+
+  public static String entradaMensagem(String mensagem, Veiculo veiculo) {
+    return new JSONObject()
+            .put("mensagem", mensagem)
+            .put("placa", veiculo.getPlaca())
+            .put("entrada", LocalDateTime.now())
+            .toString();
+  }
+
   public static String retiradoMensagem(String mensagem, Veiculo veiculo, double valor) {
     return new JSONObject()
             .put("mensagem", mensagem)

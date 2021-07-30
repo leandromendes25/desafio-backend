@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -22,7 +23,7 @@ public class Veiculo {
     private String placa;
     private TipoVeiculo tipo;
     private boolean estacionado = false;
-    private LocalDateTime entrada;
+    private LocalTime entrada;
 
     public Veiculo() {
 
