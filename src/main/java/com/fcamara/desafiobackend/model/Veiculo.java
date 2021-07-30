@@ -2,10 +2,8 @@ package com.fcamara.desafiobackend.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -24,6 +22,9 @@ public class Veiculo {
     private TipoVeiculo tipo;
     private boolean estacionado = false;
     private LocalTime entrada;
+    @ManyToOne
+    @JoinColumn(name = "estabelecimento_id")
+    private Estabelecimento estabelecimento;
 
     public Veiculo() {
 
