@@ -26,6 +26,8 @@ public class Estabelecimento {
     private Integer vagasOcupadasMotos;
     private Integer vagasOcupadasCarros;
     private double valorHora;
+    @OneToMany(mappedBy = "estabelecimento",cascade = CascadeType.ALL)
+    private List<Veiculo> veiculos = new ArrayList<>();
     @OneToMany
     private List<Usuario> usuarios = new ArrayList<>();
 
@@ -49,6 +51,11 @@ public class Estabelecimento {
     public void adicionarTelefone(Telefone telefone) {
       telefone.setEstabelecimento(this);
       this.telefones.add(telefone);
+    }
+
+    public void adicionarVeiculo(Veiculo veiculo) {
+        veiculo.setEstabelecimento(this);
+        this.veiculos.add(veiculo);
     }
 
     public void adicionarUsuario(Usuario usuario) {

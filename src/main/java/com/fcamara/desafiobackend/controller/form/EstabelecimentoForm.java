@@ -3,6 +3,7 @@ package com.fcamara.desafiobackend.controller.form;
 import com.fcamara.desafiobackend.model.Endereco;
 import com.fcamara.desafiobackend.model.Estabelecimento;
 import com.fcamara.desafiobackend.model.Telefone;
+import com.fcamara.desafiobackend.model.Usuario;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,10 +28,11 @@ public class EstabelecimentoForm {
   @NotNull
   private double valorHora;
 
-  public Estabelecimento converter() {
+  public Estabelecimento converter(Usuario usuario) {
     Estabelecimento estabelecimento = new Estabelecimento(nome, cnpj, vagasMotos, vagasCarros, valorHora);
     estabelecimento.adicionarEndereco(endereco);
     estabelecimento.adicionarTelefone(telefone);
+    estabelecimento.adicionarUsuario(usuario);
     return estabelecimento;
   }
 
