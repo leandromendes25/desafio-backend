@@ -17,7 +17,7 @@ public class Usuario implements UserDetails {
   private Long id;
   private String email;
   private String senha;
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "estabelecimento_id")
   private Estabelecimento estabelecimento;
 
