@@ -44,17 +44,21 @@ public class EstabelecimentoController {
     return ResponseEntity.status(201).body(EstabelecimentoDto.converter(repository.save(form.converter(usuarioDb))));
   }
 
-  @PutMapping("/{id}")
-  public ResponseEntity<?> update(@RequestBody @Valid EstabelecimentoForm form, @PathVariable Long id) {
-    Optional<Estabelecimento> estabelecimentoDb = repository.findById(id);
+  @PutMapping
+  public ResponseEntity<?> update(@RequestHeader("Authorization") String token, @RequestBody @Valid EstabelecimentoForm form, @PathVariable Long id) {
+    Long usuarioId = tokenService.getUsuarioId(token.substring(7));
+    Usuario usuario = usuarioRepository.findById(usuarioId).get();
+    Optional<Estabelecimento> estabelecimentoDb = repository.findById(usuario.getEstabelecimento().getId());
     if(!estabelecimentoDb.isPresent()) return ResponseEntity.badRequest().body(JsonResponse.message("Estabelecimento nao encontrado"));
     Estabelecimento estabelecimento = form.converter(estabelecimentoDb.get());
     return ResponseEntity.ok(EstabelecimentoDto.converter(repository.save(estabelecimento)));
   }
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<String> destroy(@PathVariable Long id) {
-    Optional<Estabelecimento> estabelecimento = repository.findById(id);
+  @DeleteMapping
+  public ResponseEntity<String> destroy(@RequestHeader("Authorization") String token) {
+    Long usuarioId = tokenService.getUsuarioId(token.substring(7));
+    Usuario usuario = usuarioRepository.findById(usuarioId).get();
+    Optional<Estabelecimento> estabelecimento = repository.findById(usuario.getEstabelecimento().getId());
     if (!estabelecimento.isPresent()) return ResponseEntity.badRequest().body(JsonResponse.message("Estabelecimento nao encontrado"));
     repository.delete(estabelecimento.get());
     return ResponseEntity.ok(JsonResponse.message("Estabelecimento excluido com sucesso"));
