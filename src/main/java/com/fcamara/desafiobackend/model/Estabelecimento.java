@@ -3,6 +3,7 @@ package com.fcamara.desafiobackend.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -30,6 +31,16 @@ public class Estabelecimento {
     private List<Veiculo> veiculos = new ArrayList<>();
     @OneToMany(mappedBy = "estabelecimento")
     private List<Usuario> usuarios = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Estabelecimento{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", cnpj='" + cnpj + '\'' +
+                ", veiculos" + veiculos.toString() +
+                '}';
+    }
 
     public Estabelecimento() {
 
