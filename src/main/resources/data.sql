@@ -2,4 +2,4 @@ INSERT INTO estabelecimento (nome, cnpj, vagas_motos, vagas_carros, vagas_ocupad
 
 INSERT INTO veiculo (cor, estacionado, marca, modelo, placa, tipo) VALUES ('Cinza', false, 'Fiat', 'Grand Siena', 'FOW3689', 0);
 
-INSERT INTO usuario (email, senha) VALUES ('teste@usuarioteste.com', '$2a$10$72fq9yfcBzPFEgeSde1mS.LnAaEU9tFa2ZxK/3Jo3Uc//0O9MPcmW')
+INSERT INTO usuario (email, senha, estabelecimento_id) VALUES ('teste@usuarioteste.com', '$2a$10$72fq9yfcBzPFEgeSde1mS.LnAaEU9tFa2ZxK/3Jo3Uc//0O9MPcmW', 1)

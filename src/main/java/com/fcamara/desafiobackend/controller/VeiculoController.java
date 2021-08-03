@@ -55,7 +55,7 @@ public class VeiculoController {
         estabelecimento.adicionarVeiculo(veiculo);
         estabelecimentoRepository.save(estabelecimento);
         repository.save(veiculo);
-        return ResponseEntity.ok(VeiculoDto.converter(veiculo));
+        return ResponseEntity.status(201).body((VeiculoDto.converter(veiculo)));
     }
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestHeader("Authorization") String token, @RequestBody @Valid VeiculoForm form){
@@ -63,23 +63,29 @@ public class VeiculoController {
         Optional<Usuario> usuarioDb = usuarioRepository.findById(usuarioId);
         Estabelecimento estabelecimento = usuarioDb.get().getEstabelecimento();
         Optional<Veiculo> veiculoDb = repository.findById(id);
-        boolean contains = estabelecimento.getVeiculos().contains(veiculoDb);
+        boolean contains = estabelecimento.getVeiculos().contains(veiculoDb.get());
         if(contains) {
             Veiculo veiculo = form.converter();
             veiculo.setId(id);
-
+            estabelecimento.adicionarVeiculo(veiculo);
+            estabelecimentoRepository.save(estabelecimento);
+            repository.save(veiculo);
+            return ResponseEntity.ok(VeiculoDto.converter(veiculo));
         }
-        return
+        return ResponseEntity.status(403).body(JsonResponse.message("Você não possui autorização para isso"));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@RequestHeader("Authorization") String token, @PathVariable Long id) {
         Long usuarioId = tokenService.getUsuarioId(token.substring(7));
-        Usuario usuario = usuarioRepository.findById(usuarioId).get();
-        Estabelecimento estabelecimento = usuario.getEstabelecimento();
+        Optional<Usuario> usuarioDb = usuarioRepository.findById(usuarioId);
+        Estabelecimento estabelecimento = usuarioDb.get().getEstabelecimento();
         Optional<Veiculo> veiculoDb = repository.findById(id);
-        boolean contains = estabelecimento.getVeiculos().contains(veiculoDb);
-        if(contains) return ResponseEntity.ok(JsonResponse.message("Veiculo excluido com sucesso"));
+        boolean contains = estabelecimento.getVeiculos().contains(veiculoDb.get());
+        if(contains) {
+            repository.delete(veiculoDb.get());
+            return ResponseEntity.ok(JsonResponse.message("Veiculo excluido com sucesso"));
+        }
         return ResponseEntity.status(403).body(JsonResponse.message("Você não possui autorização para isso"));
 
     }

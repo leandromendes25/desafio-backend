@@ -2,6 +2,7 @@ package com.fcamara.desafiobackend.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -25,6 +26,15 @@ public class Veiculo {
     @ManyToOne
     @JoinColumn(name = "estabelecimento_id")
     private Estabelecimento estabelecimento;
+
+    @Override
+    public String toString() {
+        return "Veiculo{" +
+                "id=" + id +
+                ", marca='" + marca + '\'' +
+                ", modelo='" + modelo + '\'' +
+                '}';
+    }
 
     public Veiculo() {
 

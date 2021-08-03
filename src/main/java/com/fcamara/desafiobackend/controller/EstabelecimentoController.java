@@ -45,7 +45,7 @@ public class EstabelecimentoController {
   }
 
   @PutMapping
-  public ResponseEntity<?> update(@RequestHeader("Authorization") String token, @RequestBody @Valid EstabelecimentoForm form, @PathVariable Long id) {
+  public ResponseEntity<?> update(@RequestHeader("Authorization") String token, @RequestBody @Valid EstabelecimentoForm form) {
     Long usuarioId = tokenService.getUsuarioId(token.substring(7));
     Usuario usuario = usuarioRepository.findById(usuarioId).get();
     Optional<Estabelecimento> estabelecimentoDb = repository.findById(usuario.getEstabelecimento().getId());
