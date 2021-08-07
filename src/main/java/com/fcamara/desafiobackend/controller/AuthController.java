@@ -3,6 +3,9 @@ package com.fcamara.desafiobackend.controller;
 import com.fcamara.desafiobackend.config.security.TokenService;
 import com.fcamara.desafiobackend.controller.form.UsuarioForm;
 import com.fcamara.desafiobackend.util.JsonResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
+@Tag(name="Controle de Autenticação")
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -26,7 +30,9 @@ public class AuthController {
 
   @Autowired
   private TokenService tokenService;
-
+  @Operation(summary = "Efetua login da aplicação e retorna token")
+  @ApiResponse(responseCode = "200", description = "TOKEN GERADO COM SUCESSO")
+  @ApiResponse(responseCode = "400", description = "FALHA NA GERAÇÃO DO TOKEN")
   @PostMapping
   public ResponseEntity<?> autenticarUsuario(@RequestBody @Valid UsuarioForm form) {
     UsernamePasswordAuthenticationToken dadosLogin = form.loginConvert();
