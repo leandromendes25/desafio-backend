@@ -52,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           "/swagger-ui.html",
           "/webjars/**",
           // -- Swagger UI v3 (OpenAPI)
+          "/v3/api-docs",
           "/v3/api-docs/**",
           "/swagger-ui/**",
           "/h2-console/**"
@@ -62,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.headers().frameOptions().disable();
 
     http.authorizeRequests()
-            .antMatchers("/h2-console/**").permitAll()
+            .antMatchers(AUTH_WHITELIST).permitAll()
             .antMatchers(HttpMethod.POST, "/estabelecimentos").permitAll()
             .antMatchers(HttpMethod.GET, "/estabelecimentos").permitAll()
             .antMatchers(HttpMethod.POST, "/usuarios").permitAll()

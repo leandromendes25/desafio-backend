@@ -8,6 +8,9 @@ import com.fcamara.desafiobackend.model.Usuario;
 import com.fcamara.desafiobackend.repository.EstabelecimentoRepository;
 import com.fcamara.desafiobackend.repository.UsuarioRepository;
 import com.fcamara.desafiobackend.util.JsonResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@Tag(name="Controle de Estabelecimentos")
 @RequestMapping("/estabelecimentos")
 public class EstabelecimentoController {
   @Autowired
@@ -27,23 +31,29 @@ public class EstabelecimentoController {
 
   @Autowired
   private UsuarioRepository usuarioRepository;
-
+  @Operation(summary = "Utilizado para listar os estabelecimentos")
+  @ApiResponse(responseCode = "200", description = "ESTABELECIMENTOS LISTADOS COM SUCESSO")
+  @ApiResponse(responseCode = "400", description = "FALHA AO LISTAR ESTABELECIMENTOS")
   @GetMapping
   public ResponseEntity<List<EstabelecimentoDto>> getAll() {
     return ResponseEntity.ok(EstabelecimentoDto.converter(repository.findAll()));
   }
-
+  @Operation(summary = "Registra estabelecimentos")
+  @ApiResponse(responseCode = "200", description = "ESTABELECIMENTO REGISTRADO COM SUCESSO")
+  @ApiResponse(responseCode = "400", description = "FALHA AO REGISTRAR ESTABELECIMENTO")
   @PostMapping
   public ResponseEntity<?> insert(@RequestHeader("Authorization") String token, @RequestBody @Valid EstabelecimentoForm form) {
-    Long usuarioId = tokenService.getUsuarioId(token.substring(7));//Bearer(espaço) -> 7 caracteres
-    Usuario usuarioDb = usuarioRepository.findById(usuarioId).get();//Ao vir id do token não tem como dar erro, não precisa(op)
+    Long usuarioId = tokenService.getUsuarioId(token.substring(7));
+    Usuario usuarioDb = usuarioRepository.findById(usuarioId).get();
     Optional<Estabelecimento> estabelecimentoDb = repository.findByCnpj(form.getCnpj());
     if(estabelecimentoDb.isPresent()) {
       return ResponseEntity.badRequest().body(JsonResponse.message("Estabelecimento já cadastrado!"));
     }
     return ResponseEntity.status(201).body(EstabelecimentoDto.converter(repository.save(form.converter(usuarioDb))));
   }
-
+  @Operation(summary = "Atualiza dados do estabelecimento")
+  @ApiResponse(responseCode = "200", description = "REGISTRO ATUALIZADO COM SUCESSO")
+  @ApiResponse(responseCode = "400", description = "FALHA AO ATUALIZAR REGISTRO")
   @PutMapping
   public ResponseEntity<?> update(@RequestHeader("Authorization") String token, @RequestBody @Valid EstabelecimentoForm form) {
     Long usuarioId = tokenService.getUsuarioId(token.substring(7));
@@ -53,7 +63,9 @@ public class EstabelecimentoController {
     Estabelecimento estabelecimento = form.converter(estabelecimentoDb.get());
     return ResponseEntity.ok(EstabelecimentoDto.converter(repository.save(estabelecimento)));
   }
-
+  @Operation(summary = "Deleta estabelecimentos")
+  @ApiResponse(responseCode = "200", description = "DEPARTAMENTO EXCLUIDO COM SUCESSO")
+  @ApiResponse(responseCode = "400", description = "FALHA AO EXCLUIR ESTABELECIMENTO")
   @DeleteMapping
   public ResponseEntity<String> destroy(@RequestHeader("Authorization") String token) {
     Long usuarioId = tokenService.getUsuarioId(token.substring(7));
