@@ -25,7 +25,7 @@ registra a entrada e saida de veiculos🏍️</p>
 <li><a href="https://maven.apache.org/download.cgi" alt="Maven">Maven</a></li>
 
 <h3 id="requisito">Pré-requisito 👀</h3>
-<p>Ter java 1.8 ou superior instalado na máquina</p>
+<p>Ter java 1.8 JDK ou superior instalado na máquina</p>
 
 <h3 id="uso">Como usar 📖</h3>
 
