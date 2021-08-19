@@ -30,12 +30,13 @@ public class Endereco{
 
     }
 
-    public Endereco(String estado, String cidade, String bairro, String cep, String rua, int numero) {
+    public Endereco(String estado, String cidade, String bairro, String cep, String rua, int numero, String complemento) {
         this.estado = estado;
         this.cidade = cidade;
         this.bairro = bairro;
         this.cep = cep;
         this.rua = rua;
         this.numero = numero;
+        this.complemento = complemento;
     }
 }

@@ -10,6 +10,7 @@ import com.fcamara.desafiobackend.repository.UsuarioRepository;
 import com.fcamara.desafiobackend.util.JsonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class EstabelecimentoController {
   public ResponseEntity<List<EstabelecimentoDto>> getAll() {
     return ResponseEntity.ok(EstabelecimentoDto.converter(repository.findAll()));
   }
-  @Operation(summary = "Registra estabelecimentos")
+  @Operation(summary = "Registra estabelecimentos", security = { @SecurityRequirement(name = "bearer-key")})
   @ApiResponse(responseCode = "200", description = "ESTABELECIMENTO REGISTRADO COM SUCESSO")
   @ApiResponse(responseCode = "400", description = "FALHA AO REGISTRAR ESTABELECIMENTO")
   @PostMapping

@@ -18,9 +18,9 @@ public class EstabelecimentoForm {
   @NotNull
   private String cnpj;
   @NotNull
-  private Endereco endereco;
+  private EnderecoForm endereco;
   @NotNull
-  private Telefone telefone;
+  private String telefone;
   @NotNull
   private Integer vagasMotos;
   @NotNull
@@ -30,7 +30,9 @@ public class EstabelecimentoForm {
 
   public Estabelecimento converter(Usuario usuario) {
     Estabelecimento estabelecimento = new Estabelecimento(nome, cnpj, vagasMotos, vagasCarros, valorHora);
+    Endereco endereco = this.endereco.converter();
     estabelecimento.adicionarEndereco(endereco);
+    Telefone telefone = new Telefone(this.telefone);
     estabelecimento.adicionarTelefone(telefone);
     estabelecimento.adicionarUsuario(usuario);
     return estabelecimento;
