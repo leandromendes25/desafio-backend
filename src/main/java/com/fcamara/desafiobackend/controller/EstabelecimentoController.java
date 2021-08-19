@@ -46,13 +46,17 @@ public class EstabelecimentoController {
   public ResponseEntity<?> insert(@RequestHeader("Authorization") String token, @RequestBody @Valid EstabelecimentoForm form) {
     Long usuarioId = tokenService.getUsuarioId(token.substring(7));
     Usuario usuarioDb = usuarioRepository.findById(usuarioId).get();
+    Optional<Estabelecimento> usuarioEstabelecimentoDb = repository.findById(usuarioDb.getEstabelecimento().getId());
+    if(usuarioEstabelecimentoDb.isPresent()) {
+      return ResponseEntity.badRequest().body(JsonResponse.message("Usuario ja possui estabelecimento"));
+    }
     Optional<Estabelecimento> estabelecimentoDb = repository.findByCnpj(form.getCnpj());
     if(estabelecimentoDb.isPresent()) {
       return ResponseEntity.badRequest().body(JsonResponse.message("Estabelecimento já cadastrado!"));
     }
     return ResponseEntity.status(201).body(EstabelecimentoDto.converter(repository.save(form.converter(usuarioDb))));
   }
-  @Operation(summary = "Atualiza dados do estabelecimento")
+  @Operation(summary = "Atualiza dados do estabelecimento", security = { @SecurityRequirement(name = "bearer-key")})
   @ApiResponse(responseCode = "200", description = "REGISTRO ATUALIZADO COM SUCESSO")
   @ApiResponse(responseCode = "400", description = "FALHA AO ATUALIZAR REGISTRO")
   @PutMapping
@@ -64,8 +68,8 @@ public class EstabelecimentoController {
     Estabelecimento estabelecimento = form.converter(estabelecimentoDb.get());
     return ResponseEntity.ok(EstabelecimentoDto.converter(repository.save(estabelecimento)));
   }
-  @Operation(summary = "Deleta estabelecimentos")
-  @ApiResponse(responseCode = "200", description = "DEPARTAMENTO EXCLUIDO COM SUCESSO")
+  @Operation(summary = "Deleta estabelecimentos", security = { @SecurityRequirement(name = "bearer-key")})
+  @ApiResponse(responseCode = "200", description = "ESTABELECIMENTO EXCLUIDO COM SUCESSO")
   @ApiResponse(responseCode = "400", description = "FALHA AO EXCLUIR ESTABELECIMENTO")
   @DeleteMapping
   public ResponseEntity<String> destroy(@RequestHeader("Authorization") String token) {
