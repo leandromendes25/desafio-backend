@@ -12,5 +12,4 @@ public class DesafioBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DesafioBackendApplication.class, args);
 	}
-
 }

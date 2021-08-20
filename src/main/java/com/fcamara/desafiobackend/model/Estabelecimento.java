@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,18 +19,18 @@ public class Estabelecimento {
     private Long id;
     private String nome;
     private String cnpj;
-    @OneToMany(mappedBy = "estabelecimento", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "estabelecimento", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Endereco> enderecos = new ArrayList<>();
-    @OneToMany(mappedBy = "estabelecimento", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "estabelecimento", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Telefone> telefones = new ArrayList<>();
     private Integer vagasMotos;
     private Integer vagasCarros;
-    private Integer vagasOcupadasMotos;
-    private Integer vagasOcupadasCarros;
+    private Integer vagasOcupadasMotos = 0;
+    private Integer vagasOcupadasCarros = 0;
     private double valorHora;
     @OneToMany(mappedBy = "estabelecimento")
     private List<Veiculo> veiculos = new ArrayList<>();
-    @OneToMany(mappedBy = "estabelecimento")
+    @OneToMany(mappedBy = "estabelecimento", cascade = CascadeType.ALL)
     private List<Usuario> usuarios = new ArrayList<>();
 
     @Override

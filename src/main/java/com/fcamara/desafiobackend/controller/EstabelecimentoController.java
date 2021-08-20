@@ -10,6 +10,7 @@ import com.fcamara.desafiobackend.repository.UsuarioRepository;
 import com.fcamara.desafiobackend.util.JsonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,20 +39,23 @@ public class EstabelecimentoController {
   public ResponseEntity<List<EstabelecimentoDto>> getAll() {
     return ResponseEntity.ok(EstabelecimentoDto.converter(repository.findAll()));
   }
-  @Operation(summary = "Registra estabelecimentos")
+  @Operation(summary = "Registra estabelecimentos", security = { @SecurityRequirement(name = "bearer-key")})
   @ApiResponse(responseCode = "200", description = "ESTABELECIMENTO REGISTRADO COM SUCESSO")
   @ApiResponse(responseCode = "400", description = "FALHA AO REGISTRAR ESTABELECIMENTO")
   @PostMapping
   public ResponseEntity<?> insert(@RequestHeader("Authorization") String token, @RequestBody @Valid EstabelecimentoForm form) {
     Long usuarioId = tokenService.getUsuarioId(token.substring(7));
     Usuario usuarioDb = usuarioRepository.findById(usuarioId).get();
+    if(usuarioDb.getEstabelecimento() != null) {
+      return ResponseEntity.badRequest().body(JsonResponse.message("Usuario ja possui estabelecimento"));
+    }
     Optional<Estabelecimento> estabelecimentoDb = repository.findByCnpj(form.getCnpj());
     if(estabelecimentoDb.isPresent()) {
       return ResponseEntity.badRequest().body(JsonResponse.message("Estabelecimento já cadastrado!"));
     }
     return ResponseEntity.status(201).body(EstabelecimentoDto.converter(repository.save(form.converter(usuarioDb))));
   }
-  @Operation(summary = "Atualiza dados do estabelecimento")
+  @Operation(summary = "Atualiza dados do estabelecimento", security = { @SecurityRequirement(name = "bearer-key")})
   @ApiResponse(responseCode = "200", description = "REGISTRO ATUALIZADO COM SUCESSO")
   @ApiResponse(responseCode = "400", description = "FALHA AO ATUALIZAR REGISTRO")
   @PutMapping
@@ -63,8 +67,8 @@ public class EstabelecimentoController {
     Estabelecimento estabelecimento = form.converter(estabelecimentoDb.get());
     return ResponseEntity.ok(EstabelecimentoDto.converter(repository.save(estabelecimento)));
   }
-  @Operation(summary = "Deleta estabelecimentos")
-  @ApiResponse(responseCode = "200", description = "DEPARTAMENTO EXCLUIDO COM SUCESSO")
+  @Operation(summary = "Deleta estabelecimentos", security = { @SecurityRequirement(name = "bearer-key")})
+  @ApiResponse(responseCode = "200", description = "ESTABELECIMENTO EXCLUIDO COM SUCESSO")
   @ApiResponse(responseCode = "400", description = "FALHA AO EXCLUIR ESTABELECIMENTO")
   @DeleteMapping
   public ResponseEntity<String> destroy(@RequestHeader("Authorization") String token) {

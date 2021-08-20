@@ -8,6 +8,7 @@ import com.fcamara.desafiobackend.service.ControleEntradaSaidaService;
 import com.fcamara.desafiobackend.util.JsonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,8 @@ public class EntradaSaidaController {
     private VeiculoRepository veiculoRepository;
     @Autowired
     private EstabelecimentoRepository estabelecimentoRepository;
-    @Operation(summary = "Registra entrada do veiculo nos estabelecimentos")
+
+    @Operation(summary = "Registra entrada do veiculo nos estabelecimentos", security = { @SecurityRequirement(name = "bearer-key")})
     @ApiResponse(responseCode = "200", description = "ENTRADA REGISTRADA COM SUCESSO")
     @ApiResponse(responseCode = "400", description = "FALHA AO REGISTRAR  ENTRADA")
     @PutMapping("/entrada/{veiculoId}/{estabelecimentoId}")
@@ -38,7 +40,7 @@ public class EntradaSaidaController {
         }
         return service.controleEntrada(veiculoDb.get(), estabelecimentoDb.get());
     }
-    @Operation(summary = "Registra saida do veiculo nos estabelecimentos")
+    @Operation(summary = "Registra saida do veiculo nos estabelecimentos", security = { @SecurityRequirement(name = "bearer-key")})
     @ApiResponse(responseCode = "200", description = "SAIDA REGISTRADA COM SUCESSO")
     @ApiResponse(responseCode = "400", description = "FALHA AO RETIRAR VEICULO, VEICULO JÁ RETIRADO")
     @PutMapping("/saida/{veiculoId}/{estabelecimentoId}")

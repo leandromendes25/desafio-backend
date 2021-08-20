@@ -11,6 +11,7 @@ import com.fcamara.desafiobackend.repository.UsuarioRepository;
 import com.fcamara.desafiobackend.util.JsonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -39,14 +40,14 @@ public class VeiculoController {
 
     @Autowired
     private TokenService tokenService;
-    @Operation(summary = "Utilizado para listar veiculos")
+    @Operation(summary = "Utilizado para listar veiculos", security = { @SecurityRequirement(name = "bearer-key")})
     @ApiResponse(responseCode = "200", description = "VEICULOS LISTADOS COM SUCESSO")
     @ApiResponse(responseCode = "400", description = "FALHA AO LISTAR VEICULOS")
     @GetMapping
     public ResponseEntity<List<VeiculoDto>> getAll() {
         return ResponseEntity.ok(VeiculoDto.converter(repository.findAll()));
     }
-    @Operation(summary = "Utilizado para registrar novos veiculos")
+    @Operation(summary = "Utilizado para registrar novos veiculos", security = {@SecurityRequirement(name = "bearer-key")})
     @ApiResponse(responseCode = "200", description = "VEICULO REGISTRADO COM SUCESSO")
     @ApiResponse(responseCode = "400", description = "VEICULO JÁ REGISTRADO")
     @PostMapping
@@ -65,7 +66,7 @@ public class VeiculoController {
         repository.save(veiculo);
         return ResponseEntity.status(201).body((VeiculoDto.converter(veiculo)));
     }
-    @Operation(summary = "Utilizado para atualizar registro do veiculo")
+    @Operation(summary = "Utilizado para atualizar registro do veiculo",security = { @SecurityRequirement(name = "bearer-key")})
     @ApiResponse(responseCode = "200", description = "REGISTRO ATUALIZADO COM SUCESSO")
     @ApiResponse(responseCode = "400", description = "FALHA AO ATUALIZAR REGISTRO")
     @PutMapping("/{id}")
@@ -85,7 +86,7 @@ public class VeiculoController {
         }
         return ResponseEntity.status(403).body(JsonResponse.message("Você não possui autorização para isso"));
     }
-    @Operation(summary = "Deleta registro do estabelecimento")
+    @Operation(summary = "Deleta registro do estabelecimento", security = { @SecurityRequirement(name = "bearer-key")})
     @ApiResponse(responseCode = "200", description = "REGISTRO DELETADO COM SUCESSO")
     @ApiResponse(responseCode = "400", description = "FALHA AO DELETAR REGISTRO")
     @DeleteMapping("/{id}")
