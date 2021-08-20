@@ -22,7 +22,7 @@ public class ControleEntradaSaidaService {
     private EstabelecimentoRepository estabelecimentoRepository;
 
     //Necessário controle -> serviço
-    public ResponseEntity<?>controleEntrada(Veiculo veiculo, Estabelecimento estabelecimento){
+    public ResponseEntity<?>controleEntrada(@org.jetbrains.annotations.NotNull Veiculo veiculo, Estabelecimento estabelecimento){
         //estacionado
         if(veiculo.isEstacionado()){
             return ResponseEntity.badRequest().body(JsonResponse.message("Veiculo já está estacionado"));
@@ -50,7 +50,7 @@ public class ControleEntradaSaidaService {
         if (veiculo.isEstacionado() ){
             if(veiculo.getTipo().equals(TipoVeiculo.CARRO)){
                 estabelecimento.setVagasOcupadasCarros(-1);
-            }else estabelecimento.setVagasMotos(-1);
+            }else estabelecimento.setVagasOcupadasMotos(-1);
             veiculo.setEstacionado(false);
             veiculorepository.save(veiculo);
             long tempoEstacionado = veiculo.getEntrada().until(LocalTime.now(), ChronoUnit.HOURS);

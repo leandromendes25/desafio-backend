@@ -46,8 +46,7 @@ public class EstabelecimentoController {
   public ResponseEntity<?> insert(@RequestHeader("Authorization") String token, @RequestBody @Valid EstabelecimentoForm form) {
     Long usuarioId = tokenService.getUsuarioId(token.substring(7));
     Usuario usuarioDb = usuarioRepository.findById(usuarioId).get();
-    Optional<Estabelecimento> usuarioEstabelecimentoDb = repository.findById(usuarioDb.getEstabelecimento().getId());
-    if(usuarioEstabelecimentoDb.isPresent()) {
+    if(usuarioDb.getEstabelecimento() != null) {
       return ResponseEntity.badRequest().body(JsonResponse.message("Usuario ja possui estabelecimento"));
     }
     Optional<Estabelecimento> estabelecimentoDb = repository.findByCnpj(form.getCnpj());

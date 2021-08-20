@@ -38,7 +38,7 @@ class EstabelecimentoControllerTest {
 
   @BeforeAll
   void login() {
-    UsernamePasswordAuthenticationToken dadosLogin = new UsernamePasswordAuthenticationToken("teste@usuarioteste.com", "1234");
+    UsernamePasswordAuthenticationToken dadosLogin = new UsernamePasswordAuthenticationToken("usuario@tests.com", "1234");
     Authentication authentication = authManager.authenticate(dadosLogin);
     token = "Bearer " + tokenService.gerarToken(authentication);
   }
@@ -86,7 +86,7 @@ class EstabelecimentoControllerTest {
 
   @Test
   @Order(3)
-  void deveriaRetornarBadRequestAoTentarCadastrarEstabelecimentoJaCadastrado() throws Exception {
+  void deveriaRetornarBadRequestAoTentarCadastrarEstabelecimentoComMesmoUsuario() throws Exception {
     JSONObject endereco = new JSONObject()
             .put("rua", "Rua Teste")
             .put("cep", "08820390")
@@ -114,7 +114,7 @@ class EstabelecimentoControllerTest {
             .post("/estabelecimentos").contentType(MediaType.APPLICATION_JSON)
             .content(body).header("Authorization", token))
             .andExpect(MockMvcResultMatchers.status().is(400))
-            .andExpect(MockMvcResultMatchers.content().json("{\"mensagem\":\"Estabelecimento já cadastrado!\"}"));
+            .andExpect(MockMvcResultMatchers.content().json("{\"mensagem\":\"Usuario ja possui estabelecimento\"}"));
   }
 
   @Test
